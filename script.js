@@ -1,33 +1,56 @@
 /**
  * Define all global variables here
  */
+
 /**
  * student_array - global array to hold student objects
  * @type {Array}
  */
+var student_array = [];
 
 /**
  * inputIds - id's of the elements that are used to add students
  * @type {string[]}
  */
+var inputIds = '';
 
 /**
  * addClicked - Event Handler when user clicks the add button
  */
+function addClicked(){
+    addStudent();
+}
 
 /**
  * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form
  */
+function cancelClicked(){
+    $('#studentName').val("");
+    $('#course').val("");
+    $('#studentGrade').val("");
+}
 
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
  *
  * @return undefined
  */
+function addStudent(){
+    var student = {};
+    student.name = $('#studentName').val();
+    student.course = $('#course').val();
+    student.grade = $('#studentGrade').val();
+    student_array.push(student);
+    console.log("Student Added");
+
+}
 
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
+function clearAddStudentForm(){
+
+}
 
 /**
  * calculateAverage - loop through the global student array and calculate average grade and return that value
