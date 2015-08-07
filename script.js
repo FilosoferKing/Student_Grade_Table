@@ -12,8 +12,10 @@ var student_array = [];
  * inputIds - id's of the elements that are used to add students
  * @type {string[]}
  */
-var inputIds = '';
-
+var studentName = $('#studentName');
+var studentCourse = $('#course');
+var studentGrade = $('#studentGrade');
+var inputIds = [studentName, studentCourse, studentGrade];
 /**
  * addClicked - Event Handler when user clicks the add button
  */
@@ -42,15 +44,17 @@ function addStudent(){
     student.grade = $('#studentGrade').val();
     student_array.push(student);
     console.log("Student Added");
-
 }
 
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
 function clearAddStudentForm(){
-
-}
+    var allInputs = inputIds.length;
+    for (var a = 0; a < allInputs; a++) {
+        [a].val("");
+    } //end for loop
+} // end function
 
 /**
  * calculateAverage - loop through the global student array and calculate average grade and return that value
@@ -63,7 +67,7 @@ function clearAddStudentForm(){
         console.log('oneStudentGrade is', oneStudentGrade);
         var gradeTotal += oneStudentGrade;
         console.log('gradeTotal is', gradeTotal)
-        var gpa = Math.round(gradeTotal / numberOfStudents);
+        var gpa = Math.round(parseFloat(gradeTotal) / parseInt(numberOfStudents);
     }; //end for loop
  } // end calculateAverage function
 
@@ -137,3 +141,7 @@ reset() {
 /**
  * Listen for the document to load and reset the data to the initial state
  */
+ $(document).ready(function{
+    console.log('document loaded');
+    reset();
+ })
