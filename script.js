@@ -77,16 +77,23 @@ function updateData() {
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
  */
-updateStudentList() {
+updateStudentList() { //we first clear out all the previously created and appended student rows and all their data.
+    $('.studentRow').remove();
+    $(nameData).remove();
+    $(courseData).remove();
+    $(gradeData).remove();
+    $(operationsData).remove();
+    $(operationsButton).remove();
+    console.log('student rows removed')
     if (numberOfStudents == 0) {
-        //need to clear out table rows/columns in tbody (clear out any previous students) due to reset
         var noStudents = $('<h1>',{
             text: 'User Info Unavailable'
         }).appendTo('tbody');
     } // end if
     else {
+        $(noStudents).remove(); //remove the possibly appended text for User Info Unavailable
         for (var j = 0; j < numberOfStudents; j++) {
-            addStudentToDom(numberOfStudents[j]);
+            addStudentToDom(numberOfStudents[j]); //for every student, we add them to the table
         } // end for loop
     } //end else
 }
@@ -95,7 +102,29 @@ updateStudentList() {
  * into the .student_list tbody
  * @param studentObj
  */
-
+addStudentToDom(student) {
+    console.log('inside addStudentToDom function');
+    var studentRow = $('<tr>',{
+        class: 'studentRow'
+    }).appendTo('tbody');
+    var nameData = $('<td>',{
+        text: student.name
+    }).appendTo(studentRow);
+    var courseData = $('<td>',{
+        text: student.course
+    }).appendTo(studentRow);
+    var gradeData = $('<td>',{
+        text: student.grade
+    }).appendTo(studentRow);
+    var operationsData = $('<td>',{
+        class: 'operationsColumn'
+    });
+    var operationsButton = $('<button>',{
+        class: 'btn btn-warning deleteStudentButton',
+        text: 'Delete'
+    }).appendTo(operationsData);
+    console.log('student added to DOM');
+}
 /**
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state
  */
