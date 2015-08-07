@@ -7,16 +7,17 @@
  * @type {Array}
  */
 var student_array = [];
+var current_student = "";
 
 /**
  * inputIds - id's of the elements that are used to add students
  * @type {string[]}
  */
-var studentName = $('#studentName');
-var studentCourse = $('#course');
-var studentGrade = $('#studentGrade');
+var studentName = "#studentName";
+var studentCourse = "#course";
+var studentGrade = "#studentGrade";
 var inputIds = [studentName, studentCourse, studentGrade];
-var current_student = "";
+
 /**
  * addClicked - Event Handler when user clicks the add button
  */
@@ -24,15 +25,15 @@ function addClicked(){
     console.log('add clicked');
     addStudent();
     addStudentToDom();
+    clearAddStudentForm();
+    calculateAverage();
 }
 
 /**
  * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form
  */
 function cancelClicked(){
-    $('#studentName').val("");
-    $('#course').val("");
-    $('#studentGrade').val("");
+    clearAddStudentForm();
 }
 
 /**
@@ -58,7 +59,7 @@ function addStudent(){
 function clearAddStudentForm(){
     var allInputs = inputIds.length;
     for (var a = 0; a < allInputs; a++) {
-        [a].val("");
+        $(inputIds[a]).val("");
     } //end for loop
 }; // end function
 
@@ -67,24 +68,26 @@ function clearAddStudentForm(){
  * @returns {number}
  */
  function calculateAverage() {
-    var numberOfStudents = student_array.length; 
+    var numberOfStudents = student_array.length;
     var gradeTotal = 0;
     for (var i = 0; i < numberOfStudents; i++) {
-        var oneStudentGrade = student_array[i].grade;
-        console.log('oneStudentGrade is', oneStudentGrade);
-        gradeTotal += oneStudentGrade;
-        console.log('gradeTotal is', gradeTotal);
-        var gpa = Math.round((parseFloat(gradeTotal)) / (parseInt(numberOfStudents)));
-        return gpa;
-    }; //end for loop
+       var oneStudentGrade = parseFloat(student_array[i].grade);
+       console.log('oneStudentGrade is', oneStudentGrade);
+       gradeTotal = gradeTotal + oneStudentGrade;
+       console.log('gradeTotal is', gradeTotal);
+       gpa = Math.round((parseFloat(gradeTotal)) / (parseInt(numberOfStudents)));
+       console.log("GPA: ", gpa)
+    }; //end for loops
+    updateData(gpa);
  }; // end calculateAverage function
 
 /**
  * updateData - centralized function to update the average and call student list update
  */
 function updateData(gpa) {
-    $('.avgGrade').text(gpa);
-    updateStudentList();
+    $('.avgGrade').empty();
+    $('.avgGrade').append(gpa);
+    //updateStudentList();
 }; // end updateData function
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
