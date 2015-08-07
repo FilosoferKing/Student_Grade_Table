@@ -47,6 +47,7 @@ function addStudent(){
     student.grade = $('#studentGrade').val();
     student_array.push(student);
     console.log("Student Added");
+
 }
 
 /**
@@ -111,21 +112,22 @@ function updateStudentList(numberOfStudents) { //we first clear out all the prev
  * into the .student_list tbody
  * @param studentObj
  */
-function addStudentToDom(studentObj) {
+function addStudentToDom(student) {
     console.log('inside addStudentToDom function');
+    console.log('student is',student);
     var studentRow = $('<tr>',{
         class: 'studentRow'
     }).appendTo('tbody');
     var nameData = $('<td>',{
-        text: studentObj.name,
+        text: student.name,
         class: 'nameInfo'
     }).appendTo(studentRow);
     var courseData = $('<td>',{
-        text: studentObj.course,
+        text: student.course,
         class: 'courseInfo'
     }).appendTo(studentRow);
     var gradeData = $('<td>',{
-        text: studentObj.grade,
+        text: student.grade,
         class: 'gradeInfo'
     }).appendTo(studentRow);
     var operationsData = $('<td>',{
