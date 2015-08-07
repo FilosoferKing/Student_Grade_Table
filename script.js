@@ -20,7 +20,9 @@ var inputIds = [studentName, studentCourse, studentGrade];
  * addClicked - Event Handler when user clicks the add button
  */
 function addClicked(){
+    console.log('add clicked');
     addStudent();
+    addStudentToDom();
 }
 
 /**
@@ -38,6 +40,7 @@ function cancelClicked(){
  * @return undefined
  */
 function addStudent(){
+    console.log('inside addStudent function');
     var student = {};
     student.name = $('#studentName').val();
     student.course = $('#course').val();
@@ -54,7 +57,7 @@ function clearAddStudentForm(){
     for (var a = 0; a < allInputs; a++) {
         [a].val("");
     } //end for loop
-} // end function
+}; // end function
 
 /**
  * calculateAverage - loop through the global student array and calculate average grade and return that value
@@ -62,32 +65,34 @@ function clearAddStudentForm(){
  */
  function calculateAverage() {
     var numberOfStudents = student_array.length; 
+    var gradeTotal = 0;
     for (var i = 0; i < numberOfStudents; i++) {
-        var oneStudentGrade = student_array.grade[i];
+        var oneStudentGrade = student_array[i].grade;
         console.log('oneStudentGrade is', oneStudentGrade);
-        var gradeTotal += oneStudentGrade;
-        console.log('gradeTotal is', gradeTotal)
-        var gpa = Math.round(parseFloat(gradeTotal) / parseInt(numberOfStudents);
+        gradeTotal += oneStudentGrade;
+        console.log('gradeTotal is', gradeTotal);
+        var gpa = Math.round((parseFloat(gradeTotal)) / (parseInt(numberOfStudents)));
+        return gpa;
     }; //end for loop
- } // end calculateAverage function
+ }; // end calculateAverage function
 
 /**
  * updateData - centralized function to update the average and call student list update
  */
-function updateData() {
+function updateData(gpa) {
     $('.avgGrade').text(gpa);
     updateStudentList();
-} // end updateData function
+}; // end updateData function
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
  */
-updateStudentList() { //we first clear out all the previously created and appended student rows and all their data.
+function updateStudentList(numberOfStudents) { //we first clear out all the previously created and appended student rows and all their data.
     $('.studentRow').remove();
-    $(nameData).remove();
-    $(courseData).remove();
-    $(gradeData).remove();
-    $(operationsData).remove();
-    $(operationsButton).remove();
+    $('.nameInfo').remove();
+    $('.courseInfo').remove();
+    $('.gradeInfo').remove();
+    $('.operationsColumn').remove();
+    $('.deleteStudentButton').remove();
     console.log('student rows removed')
     if (numberOfStudents == 0) {
         var noStudents = $('<h1>',{
@@ -100,25 +105,28 @@ updateStudentList() { //we first clear out all the previously created and append
             addStudentToDom(numberOfStudents[j]); //for every student, we add them to the table
         } // end for loop
     } //end else
-}
+};
 /**
  * addStudentToDom - take in a student object, create html elements from the values and then append the elements
  * into the .student_list tbody
  * @param studentObj
  */
-addStudentToDom(student) {
+function addStudentToDom(studentObj) {
     console.log('inside addStudentToDom function');
     var studentRow = $('<tr>',{
         class: 'studentRow'
     }).appendTo('tbody');
     var nameData = $('<td>',{
-        text: student.name
+        text: studentObj.name,
+        class: 'nameInfo'
     }).appendTo(studentRow);
     var courseData = $('<td>',{
-        text: student.course
+        text: studentObj.course,
+        class: 'courseInfo'
     }).appendTo(studentRow);
     var gradeData = $('<td>',{
-        text: student.grade
+        text: studentObj.grade,
+        class: 'gradeInfo'
     }).appendTo(studentRow);
     var operationsData = $('<td>',{
         class: 'operationsColumn'
@@ -128,20 +136,20 @@ addStudentToDom(student) {
         text: 'Delete'
     }).appendTo(operationsData);
     console.log('student added to DOM');
-}
+};
 /**
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state
  */
-reset() {
+function reset() {
     student_array = []; //empties out our array
     updateData(); // updateData first runs and since our array is empty and we have no students, gpa becomes '0'.
     //Then updateStudentList runs (as part of the updateData function) and clears out table and adds the user info unavailable.
-}
+};
 
 /**
  * Listen for the document to load and reset the data to the initial state
  */
- $(document).ready(function{
+ $(document).ready(function(){
     console.log('document loaded');
     reset();
- })
+ });
