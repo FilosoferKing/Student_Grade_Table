@@ -16,6 +16,7 @@ var studentName = $('#studentName');
 var studentCourse = $('#course');
 var studentGrade = $('#studentGrade');
 var inputIds = [studentName, studentCourse, studentGrade];
+var current_student = "";
 /**
  * addClicked - Event Handler when user clicks the add button
  */
@@ -47,6 +48,7 @@ function addStudent(){
     student.grade = $('#studentGrade').val();
     student_array.push(student);
     console.log("Student Added");
+    current_student = student;
 
 }
 
@@ -112,29 +114,29 @@ function updateStudentList(numberOfStudents) { //we first clear out all the prev
  * into the .student_list tbody
  * @param studentObj
  */
-function addStudentToDom(student) {
+function addStudentToDom() {
     console.log('inside addStudentToDom function');
-    console.log('student is',student);
+    console.log('student is', current_student);
     var studentRow = $('<tr>',{
         class: 'studentRow'
     }).appendTo('tbody');
     var nameData = $('<td>',{
-        text: student.name,
+        text: current_student.name,
         class: 'nameInfo'
     }).appendTo(studentRow);
     var courseData = $('<td>',{
-        text: student.course,
+        text: current_student.course,
         class: 'courseInfo'
     }).appendTo(studentRow);
     var gradeData = $('<td>',{
-        text: student.grade,
+        text: current_student.grade,
         class: 'gradeInfo'
     }).appendTo(studentRow);
     var operationsData = $('<td>',{
         class: 'operationsColumn'
-    });
+    }).appendTo(studentRow);
     var operationsButton = $('<button>',{
-        class: 'btn btn-warning deleteStudentButton',
+        class: 'btn btn-danger deleteStudentButton',
         text: 'Delete'
     }).appendTo(operationsData);
     console.log('student added to DOM');
