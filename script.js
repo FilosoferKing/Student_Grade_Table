@@ -8,6 +8,8 @@
  */
 var student_array = [];
 var numberOfStudents;
+var studentRow;
+var identifier = 0;
 
 /**
  * inputIds - id's of the elements that are used to add students
@@ -23,7 +25,7 @@ var inputIds = [studentName, studentCourse, studentGrade];
  */
 function addClicked() {
     addStudent();
-    updateStudentList()
+    updateStudentList();
     clearAddStudentForm();
     calculateAverage();
 }
@@ -45,6 +47,7 @@ function addStudent() {
     student.name = $('#studentName').val();
     student.course = $('#course').val();
     student.grade = $('#studentGrade').val();
+    student.bool = true;
     student_array.push(student);
 
 }
@@ -88,7 +91,9 @@ function updateData(gpa) {
  */
 function updateStudentList() { //we first clear out all the previously created and appended student rows and all their data.
     $('tbody').empty();
+    identifier = 0;
     for (var i = 0; i < student_array.length; i++) {
+        identifier += 1;
         var this_student = student_array[i];
         addStudentToDom(this_student);
     }
@@ -99,8 +104,9 @@ function updateStudentList() { //we first clear out all the previously created a
  * @param studentObj
  */
 function addStudentToDom(studentObj) {
-    var studentRow = $('<tr>', {
-        class: 'studentRow'
+    studentRow = $('<tr>', {
+        class: 'studentRow',
+        id: identifier
     }).appendTo('tbody');
     var nameData = $('<td>', {
         text: studentObj.name,
@@ -121,6 +127,7 @@ function addStudentToDom(studentObj) {
         class: 'btn btn-danger deleteStudentButton',
         text: 'Delete'
     }).appendTo(operationsData);
+
 };
 /**
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state
@@ -139,4 +146,14 @@ $(document).ready(function () {
         text: 'User Info Unavailable'
     }).appendTo('tbody');
     reset();
+
+    $('tbody').on('click', '.deleteStudentButton', function(){
+        var this_id = $(this).parents('tr').attr('id');
+        console.log("This is this: ", $(this).parents('tr'));
+        $('#' + this_id).remove();
+        //console.log("Removed", $('#' + this_id));
+    });
 });
+
+
+
