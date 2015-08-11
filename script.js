@@ -93,9 +93,11 @@ function updateStudentList() { //we first clear out all the previously created a
     $('tbody').empty();
     identifier = 0;
     for (var i = 0; i < student_array.length; i++) {
-        identifier += 1;
-        var this_student = student_array[i];
-        addStudentToDom(this_student);
+        if(student_array[i].deleted == false) {
+            identifier += 1;
+            var this_student = student_array[i];
+            addStudentToDom(this_student);
+        }
     }
 };
 /**
@@ -148,7 +150,7 @@ $(document).ready(function () {
     reset();
 
     $('tbody').on('click', '.deleteStudentButton', function(){
-        var this_id = $(this).parents('tr').attr('id');
+        this_id = $(this).parents('tr').attr('id');
         $('#' + this_id).remove();
         student_array[this_id - 1].deleted = true;
         console.log(student_array[this_id - 1].deleted);
