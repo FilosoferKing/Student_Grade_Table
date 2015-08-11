@@ -47,7 +47,7 @@ function addStudent() {
     student.name = $('#studentName').val();
     student.course = $('#course').val();
     student.grade = $('#studentGrade').val();
-    student.bool = true;
+    student.deleted = false;
     student_array.push(student);
 
 }
@@ -149,9 +149,8 @@ $(document).ready(function () {
 
     $('tbody').on('click', '.deleteStudentButton', function(){
         var this_id = $(this).parents('tr').attr('id');
-        console.log("This is this: ", $(this).parents('tr'));
         $('#' + this_id).remove();
-        //console.log("Removed", $('#' + this_id));
+
     });
 });
 
