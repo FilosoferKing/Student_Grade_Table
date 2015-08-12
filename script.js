@@ -9,7 +9,7 @@
 var student_array = [];
 var numberOfStudents;
 var studentRow;
-var identifier = 0;
+
 
 /**
  * inputIds - id's of the elements that are used to add students
@@ -24,10 +24,12 @@ var inputIds = [studentName, studentCourse, studentGrade];
  * addClicked - Event Handler when user clicks the add button
  */
 function addClicked() {
-    addStudent();
+    //addStudent();
+    load_data();
     updateStudentList();
     clearAddStudentForm();
-    calculateAverage();
+    //calculateAverage();
+
 }
 
 /**
@@ -47,6 +49,7 @@ function addStudent() {
     student.name = $('#studentName').val();
     student.course = $('#course').val();
     student.grade = $('#studentGrade').val();
+    student.identifier = 0;
     student.deleted = false;
     student_array.push(student);
 
@@ -91,12 +94,11 @@ function updateData(gpa) {
  */
 function updateStudentList() { //we first clear out all the previously created and appended student rows and all their data.
     $('tbody').empty();
-    identifier = 0;
+
     for (var i = 0; i < student_array.length; i++) {
-        if(student_array[i].deleted == false) {
-            identifier += 1;
+        if (student_array[i].deleted == false) {
             var this_student = student_array[i];
-            addStudentToDom(this_student);
+            addStudentToDom(this_student, i+1);
         }
     }
 };
@@ -105,10 +107,10 @@ function updateStudentList() { //we first clear out all the previously created a
  * into the .student_list tbody
  * @param studentObj
  */
-function addStudentToDom(studentObj) {
+function addStudentToDom(studentObj, id) {
     studentRow = $('<tr>', {
         class: 'studentRow',
-        id: identifier
+        id: id
     }).appendTo('tbody');
     var nameData = $('<td>', {
         text: studentObj.name,
@@ -140,6 +142,30 @@ function reset() {
     //Then updateStudentList runs (as part of the updateData function) and clears out table and adds the user info unavailable.
 };
 
+function load_data(){
+    $.ajax({
+        dataType: 'json',
+        url: 'http://s-apis.learningfuze.com/sgt/get',
+        crossDomain: true,
+        success: function(response){
+            console.log(response);
+            if(response == "undefiend") {
+                console.log("Cannot retrieve data");
+            }
+            for (var i = 0; i < response.data.length; i++){
+                var student= {};
+                student.name = response.data[i].name;
+                student.course = response.data[i].course;
+                student.grade = response.data[i].grade;
+                student.identifier = response.data[i].id;
+                student.deleted = false;
+                student_array.push(student);
+            }
+            updateStudentList();
+        }
+    });
+}
+
 /**
  * Listen for the document to load and reset the data to the initial state
  */
@@ -149,11 +175,13 @@ $(document).ready(function () {
     }).appendTo('tbody');
     reset();
 
+    load_data();
+
     $('tbody').on('click', '.deleteStudentButton', function(){
         this_id = $(this).parents('tr').attr('id');
         $('#' + this_id).remove();
         student_array[this_id - 1].deleted = true;
-        console.log(student_array[this_id - 1].deleted);
+        console.log(student_array[this_id - 1]);
 
     });
 });
