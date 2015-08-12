@@ -72,12 +72,15 @@ function clearAddStudentForm() {
 function calculateAverage() {
     numberOfStudents = student_array.length;
     var gradeTotal = 0;
+    var number_undeleted_students=0;
     for (var i = 0; i < numberOfStudents; i++) {
-        var oneStudentGrade = parseFloat(student_array[i].grade);
-        gradeTotal = gradeTotal + oneStudentGrade;
-        gpa = Math.round((parseFloat(gradeTotal)) / (parseInt(numberOfStudents)));
-    }
-    ; //end for loops
+        if (student_array[i].deleted == false) {
+            gradeTotal += student_array[i].grade;
+            number_undeleted_students++;
+        }
+    } //end for loops
+    gpa = Math.round(gradeTotal / number_undeleted_students);
+    console.log("GPA, Grade Total", gpa, gradeTotal,number_undeleted_students);
     updateData(gpa);
 }; // end calculateAverage function
 
@@ -153,7 +156,7 @@ function load_data(){
                 console.log("Cannot retrieve data");
             }
             for (var i = 0; i < response.data.length; i++){
-                var student= {};
+                student= {};
                 student.name = response.data[i].name;
                 student.course = response.data[i].course;
                 student.grade = response.data[i].grade;
@@ -162,6 +165,7 @@ function load_data(){
                 student_array.push(student);
             }
             updateStudentList();
+            calculateAverage();
         }
     });
 }
@@ -182,6 +186,8 @@ $(document).ready(function () {
         $('#' + this_id).remove();
         student_array[this_id - 1].deleted = true;
         console.log(student_array[this_id - 1]);
+        updateStudentList();
+        calculateAverage();
 
     });
 });
