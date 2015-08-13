@@ -24,11 +24,8 @@ var inputIds = [studentName, studentCourse, studentGrade];
  * addClicked - Event Handler when user clicks the add button
  */
 function addClicked() {
-    //addStudent();
-    load_data();
-    updateStudentList();
+    addStudent();
     clearAddStudentForm();
-    //calculateAverage();
 
 }
 
@@ -51,7 +48,8 @@ function addStudent() {
     student.grade = $('#studentGrade').val();
     student.identifier = 0;
     student.deleted = false;
-    student_array.push(student);
+    //student_array.push(student);
+    send_student_data(student.name, student.course, student.grade);
 
 }
 
@@ -151,10 +149,7 @@ function load_data(){
         url: 'http://s-apis.learningfuze.com/sgt/get',
         crossDomain: true,
         success: function(response){
-            console.log(response);
-            if(response == "undefiend") {
-                console.log("Cannot retrieve data");
-            }
+            console.log("load data: ",response);
             for (var i = 0; i < response.data.length; i++){
                 student= {};
                 student.name = response.data[i].name;
@@ -164,10 +159,28 @@ function load_data(){
                 student.deleted = false;
                 student_array.push(student);
             }
-            updateStudentList();
-            calculateAverage();
         }
     });
+    updateStudentList();
+    calculateAverage();
+}
+
+function send_student_data(the_name, the_course, the_grade){
+    //console.log(name, course, grade);
+    $.ajax({
+        dataType: 'json',
+        data: {name: the_name, grade: the_grade, course: the_course},
+        method: "POST",
+        url: 'http://s-apis.learningfuze.com/sgt/create',
+        success: function(response){
+            console.log("Sent", response);
+            if (response.success){
+                console.log("Sent successfully!");
+            }
+            load_data();
+        }
+    });
+
 }
 
 /**
@@ -179,7 +192,7 @@ $(document).ready(function () {
     }).appendTo('tbody');
     reset();
 
-    load_data();
+
 
     $('tbody').on('click', '.deleteStudentButton', function(){
         this_id = $(this).parents('tr').attr('id');
