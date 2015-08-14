@@ -25,6 +25,7 @@ var inputIds = [studentName, studentCourse, studentGrade];
  */
 function addClicked() {
     addStudent();
+    check_new_data();
     clearAddStudentForm();
 
 }
@@ -150,6 +151,7 @@ function load_data(){
         url: 'http://s-apis.learningfuze.com/sgt/get',
         crossDomain: true,
         success: function(response){
+            student_array = [];
             console.log("load data: ",response);
             for (var i = 0; i < response.data.length; i++){
                 student= {};
@@ -191,6 +193,36 @@ function send_student_data(the_name, the_course, the_grade){
 
 }
 
+function check_data(){
+    $.ajax({
+        dataType: 'json',
+        url: 'http://s-apis.learningfuze.com/sgt/get',
+        crossDomain: true,
+        success: function(response){
+
+            if (response.data.length > student_array.length){
+                console.log("load data: ",response);
+                load_data();
+            }
+        },
+        error: function(response){
+            console.log("No updates");
+        }
+    });
+
+}
+
+function check_new_data(){
+    setInterval(function(){
+        check_data();
+    }, 15000);
+}
+
+function sort_array(){
+    student_array.sort(function(a, b){return a.name.localeCompare(b.name)});
+    console.log("Sorted Array: ", student_array);
+}
+
 /**
  * Listen for the document to load and reset the data to the initial state
  */
@@ -200,13 +232,7 @@ $(document).ready(function () {
     }).appendTo('tbody');
     reset();
 
-function check_new_data(){
-    setInterval(function(){
-        load_data();
-    }, 3000);
-}
 
-    //check_new_data();
 
     $('tbody').on('click', '.deleteStudentButton', function(){
         this_id = $(this).parents('tr').attr('id');
