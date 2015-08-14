@@ -80,7 +80,7 @@ function calculateAverage() {
         }
     } //end for loops
     gpa = Math.round(gradeTotal / number_undeleted_students);
-    console.log("GPA, Grade Total", gpa, gradeTotal,number_undeleted_students);
+
     updateData(gpa);
 }; // end calculateAverage function
 
@@ -174,22 +174,22 @@ function load_data(){
 
 function send_student_data(the_name, the_course, the_grade){
     //console.log(name, course, grade);
-    $.ajax({
-        dataType: 'json',
-        data: {name: the_name, grade: the_grade, course: the_course},
-        method: "POST",
-        url: 'http://s-apis.learningfuze.com/sgt/create',
-        success: function(response){
-            console.log("Sent", response);
-            if (response.success){
-                console.log("Sent successfully!");
+        $.ajax({
+            dataType: 'json',
+            data: {name: the_name, grade: the_grade, course: the_course},
+            method: "POST",
+            url: 'http://s-apis.learningfuze.com/sgt/create',
+            success: function (response) {
+
+                if (response.success) {
+
+                }
+                load_data();
+            },
+            error: function (response) {
+
             }
-            load_data();
-        },
-        error: function(response){
-            console.log("Data could not be sent");
-        }
-    });
+        });
 
 }
 
@@ -201,7 +201,6 @@ function check_data(){
         success: function(response){
 
             if (response.data.length > student_array.length){
-                console.log("load data: ",response);
                 load_data();
             }
         },
@@ -218,9 +217,20 @@ function check_new_data(){
     }, 15000);
 }
 
-function sort_array(){
+function sort_array_name(){
     student_array.sort(function(a, b){return a.name.localeCompare(b.name)});
-    console.log("Sorted Array: ", student_array);
+    updateStudentList();
+}
+
+function sort_array_course(){
+    student_array.sort(function(a, b){return a.course.localeCompare(b.course)});
+    updateStudentList();
+}
+
+function sort_array_grade(){
+    student_array.sort(function(a, b){if (a.grade < b.grade){ });
+        console.log("Grade Array: ", student_array);
+    updateStudentList();
 }
 
 /**
