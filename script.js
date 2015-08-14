@@ -42,6 +42,7 @@ function cancelClicked() {
  * @return undefined
  */
 function addStudent() {
+    student_array = [];
     student = {};
     student.name = $('#studentName').val();
     student.course = $('#course').val();
@@ -159,10 +160,14 @@ function load_data(){
                 student.deleted = false;
                 student_array.push(student);
             }
+            updateStudentList();
+            calculateAverage();
+        },
+        error: function(response){
+            console.log("Could not retrieve data");
         }
     });
-    updateStudentList();
-    calculateAverage();
+
 }
 
 function send_student_data(the_name, the_course, the_grade){
@@ -178,6 +183,9 @@ function send_student_data(the_name, the_course, the_grade){
                 console.log("Sent successfully!");
             }
             load_data();
+        },
+        error: function(response){
+            console.log("Data could not be sent");
         }
     });
 
@@ -192,7 +200,13 @@ $(document).ready(function () {
     }).appendTo('tbody');
     reset();
 
+function check_new_data(){
+    setInterval(function(){
+        load_data();
+    }, 3000);
+}
 
+    //check_new_data();
 
     $('tbody').on('click', '.deleteStudentButton', function(){
         this_id = $(this).parents('tr').attr('id');
