@@ -9,7 +9,7 @@
 var student_array = [];
 var numberOfStudents;
 var studentRow;
-
+var course_array = [];
 
 /**
  * inputIds - id's of the elements that are used to add students
@@ -52,7 +52,6 @@ function addStudent() {
     student.deleted = false;
     //student_array.push(student);
     send_student_data(student.name, student.course, student.grade);
-
 }
 
 /**
@@ -151,6 +150,9 @@ function load_data(){
         url: 'http://s-apis.learningfuze.com/sgt/get',
         crossDomain: true,
         success: function(response){
+            if (!response.success){
+                console.log("Could not retrieve data");
+            }
             student_array = [];
             console.log("load data: ",response);
             for (var i = 0; i < response.data.length; i++){
@@ -180,17 +182,15 @@ function send_student_data(the_name, the_course, the_grade){
             method: "POST",
             url: 'http://s-apis.learningfuze.com/sgt/create',
             success: function (response) {
-
                 if (response.success) {
-
+                    load_data();
                 }
-                load_data();
             },
             error: function (response) {
-
+                console.log("Could not send data");
+                alert("Server error, please try again later!");
             }
         });
-
 }
 
 function check_data(){
@@ -199,7 +199,6 @@ function check_data(){
         url: 'http://s-apis.learningfuze.com/sgt/get',
         crossDomain: true,
         success: function(response){
-
             if (response.data.length > student_array.length){
                 load_data();
             }
@@ -214,7 +213,7 @@ function check_data(){
 function check_new_data(){
     setInterval(function(){
         check_data();
-    }, 15000);
+    }, 30000);
 }
 
 function sort_array_name(){
@@ -227,10 +226,27 @@ function sort_array_course(){
     updateStudentList();
 }
 
-function sort_array_grade(){
-    student_array.sort(function(a, b){if (a.grade < b.grade){ });
-        console.log("Grade Array: ", student_array);
-    updateStudentList();
+//function sort_array_grade(){
+//    student_array.sort(function(a, b){if (a.grade < b.grade){ });
+//        console.log("Grade Array: ", student_array);
+//    updateStudentList();
+//}
+
+function course_auto_complete(course_input){
+    console.log(course_input);
+    $.ajax({
+        dataType: 'json',
+        data: {course: course_input},
+        method: 'POST',
+        url: 'http://s-apis.learningfuze.com/sgt/courses',
+        success: function(response){
+
+            for (var i = 0; i < response.data.length; i++) {
+                console.log(response.data[i].course);
+                $('.auto_fill').append(response.data[i].course + "<br>");
+            }
+        }
+    });
 }
 
 /**
@@ -242,6 +258,11 @@ $(document).ready(function () {
     }).appendTo('tbody');
     reset();
 
+    $('#course').keyup(function(){
+        $('.auto_fill').empty();
+        var course_field = $('#course').val();
+        course_auto_complete(course_field);
+    });
 
 
     $('tbody').on('click', '.deleteStudentButton', function(){
