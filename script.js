@@ -233,7 +233,6 @@ function sort_array_course(){
 //}
 
 function course_auto_complete(course_input){
-    console.log(course_input);
     $.ajax({
         dataType: 'json',
         data: {course: course_input},
@@ -245,9 +244,7 @@ function course_auto_complete(course_input){
             } else {
                 $('.auto_fill').empty().css({"visibility": "hidden"});
             }
-            console.log("response data:", response.data);
             for (var i = 0; i < response.data.length; i++) {
-                console.log(response.data[i].course);
                 $('.auto_fill ul').append("<li>" + response.data[i].course + "</li>");
             }
             $('li').on('click', function(){
@@ -259,6 +256,18 @@ function course_auto_complete(course_input){
     });
 }
 
+function delete_student(the_student_id){
+    $.ajax({
+        url: 'http://s-apis.learningfuze.com/sgt/delete',
+        data: {student_id: the_student_id},
+        method: 'POST',
+        dataType: 'json',
+        crossDomain: true,
+        success: function(response){
+
+        }
+    });
+}
 /**
  * Listen for the document to load and reset the data to the initial state
  */
@@ -279,6 +288,8 @@ $(document).ready(function () {
         this_id = $(this).parents('tr').attr('id');
         $('#' + this_id).remove();
         student_array[this_id - 1].deleted = true;
+        var db_student_id = student_array[this_id - 1].identifier;
+        delete_student(db_student_id);
         console.log(student_array[this_id - 1]);
         updateStudentList();
         calculateAverage();
