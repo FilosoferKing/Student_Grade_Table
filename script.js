@@ -256,17 +256,27 @@ function course_auto_complete(course_input){
     });
 }
 
-function delete_student(the_student_id){
-    $.ajax({
-        url: 'http://s-apis.learningfuze.com/sgt/delete',
-        data: {student_id: the_student_id},
-        method: 'POST',
-        dataType: 'json',
-        crossDomain: true,
-        success: function(response){
-
-        }
-    });
+var click_toggle = false;
+function delete_student(the_student_id, this_id){
+    if(click_toggle == true) {
+        $.ajax({
+            url: 'http://s-apis.learningfuze.com/sgt/delete',
+            data: {student_id: the_student_id, "force-failure": "timeout"},
+            method: 'POST',
+            dataType: 'json',
+            crossDomain: true,
+            success: function (response) {
+                console.log(response);
+                click_toggle = false;
+                $('#' + this_id).children('td:nth-child(4)').text("Deleted");
+                $('#' + this_id).delay(2000).fadeOut();
+                calculateAverage();
+            },
+            error: function(response){
+                alert("Sorry, could not process request.");
+            }
+        });
+    }
 }
 /**
  * Listen for the document to load and reset the data to the initial state
@@ -283,17 +293,14 @@ $(document).ready(function () {
         course_auto_complete(course_field);
     });
 
-
     $('tbody').on('click', '.deleteStudentButton', function(){
+        console.log("Click!");
         this_id = $(this).parents('tr').attr('id');
-        $('#' + this_id).remove();
         student_array[this_id - 1].deleted = true;
         var db_student_id = student_array[this_id - 1].identifier;
-        delete_student(db_student_id);
+        click_toggle = true;
+        delete_student(db_student_id, this_id);
         console.log(student_array[this_id - 1]);
-        updateStudentList();
-        calculateAverage();
-
     });
 });
 
