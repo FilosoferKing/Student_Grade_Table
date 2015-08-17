@@ -6,6 +6,28 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
+    <style>
+        .auto_fill ul li {
+            cursor: pointer;
+            padding-left: 10px;
+        }
+
+        .auto_fill ul li:hover {
+            background-color: rgba(0, 102, 255, .5);
+        }
+
+        .auto_fill {
+            border: 1px solid;
+            visibility: hidden;
+        }
+
+        .auto_fill ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding-left: 0;
+            z-index: 100;
+        }
+    </style>
 </head>
 <body>
 <div class="">
@@ -41,6 +63,7 @@
                        placeholder="Student Course">
             </div>
             <div class="auto_fill">
+                <ul></ul>
             </div>
             <div class="col-xs-12 input-group form-group">
                 <span class="input-group-addon">

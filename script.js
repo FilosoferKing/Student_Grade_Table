@@ -240,11 +240,21 @@ function course_auto_complete(course_input){
         method: 'POST',
         url: 'http://s-apis.learningfuze.com/sgt/courses',
         success: function(response){
-
+            if (response.success) {
+                $('.auto_fill').css({"visibility": "visible"});
+            } else {
+                $('.auto_fill').empty().css({"visibility": "hidden"});
+            }
+            console.log("response data:", response.data);
             for (var i = 0; i < response.data.length; i++) {
                 console.log(response.data[i].course);
-                $('.auto_fill').append(response.data[i].course + "<br>");
+                $('.auto_fill ul').append("<li>" + response.data[i].course + "</li>");
             }
+            $('li').on('click', function(){
+                var course_selection = $(this).text();
+                $('#course').val(course_selection);
+                $('.auto_fill').empty().css({"visibility": "hidden"});
+            })
         }
     });
 }
@@ -259,7 +269,7 @@ $(document).ready(function () {
     reset();
 
     $('#course').keyup(function(){
-        $('.auto_fill').empty();
+        $('.auto_fill ul').empty();
         var course_field = $('#course').val();
         course_auto_complete(course_field);
     });
