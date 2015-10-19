@@ -1,20 +1,7 @@
-/**
- * Define all global variables here
- */
-
-/**
- * student_array - global array to hold student objects
- * @type {Array}
- */
 var student_array = [];
 var numberOfStudents;
 var studentRow;
 var course_array = [];
-
-/**
- * inputIds - id's of the elements that are used to add students
- * @type {string[]}
- */
 var studentName = "#studentName";
 var studentCourse = "#course";
 var studentGrade = "#studentGrade";
@@ -294,6 +281,8 @@ function delete_click() {
  * Listen for the document to load and reset the data to the initial state
  */
 $(document).ready(function () {
+    load_data();
+
     var noStudents = $('<h3>', {
         text: 'User Info Unavailable'
     }).appendTo('tbody');
