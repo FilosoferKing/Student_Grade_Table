@@ -2,6 +2,22 @@
 
 ![Student Grade Table](/img/sgt.png)
 
+**Description**: The student grade table is an information table listing student names, courses and grades. <br>
+
+##Features
+* 
+
+##Project Notes
+  * The most fun and challenging aspect of this project was using the offset() function 
+    to calculate the position of the red laser in opposition to the Death Star so the
+    laser would not pass the target when it moved forward with each new card match.
+  * I enjoyed using CSS animation to rotate the cards creating the flip motion. Since there
+    were two cards stacked creating a back and face, timing was critical in making the flip seemless.
+  * My favorite aspect of the game is the end credit crawl and the fighter jet animation. It was 
+    a challenge to manipulate the end credit text to have the Star Wars feel to it. I also 
+    enjoyed animating the fighter jet using jQuery animation to make it feel like it is flying towards you.
+
+
 ## Version 0.1
 #### Description
 Version 0.1 is the starting point of the Student Grade Table Project. LearningFuze has provided a base structure that
