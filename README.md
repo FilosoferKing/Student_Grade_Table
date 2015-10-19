@@ -1,4 +1,6 @@
-# SGT - Student Grade Table
+#Student Grade Table
+
+![Student Grade Table](/img/sgt.png)
 
 ## Version 0.1
 #### Description
