@@ -5,7 +5,7 @@
 **Description**: The student grade table is an information table listing student names, courses and grades. <br>
 
 ##Features
-* Gives you total gaede point average of all students.
+* Total grade point average of all students.
 * Alphabetical organization option for student name and student course.
 * Add and delete students.
 
