@@ -8,9 +8,11 @@
 * Total grade point average of all students.
 * Alphabetical organization option for student name and student course.
 * Add and delete students.
+* Auto completion on form for courses.
 
 ##Project Notes
-  * 
+  * This is the first project I did using AJAX calls. Not only was it useful in learning 
+    how to retrieve infromation, but also in how to pull specific information from in JSON.
 
 
 ## Version 0.1
