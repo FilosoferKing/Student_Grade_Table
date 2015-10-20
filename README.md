@@ -12,8 +12,8 @@
 
 ##Project Notes
   * This is the first project I did using AJAX calls. Not only was it useful in learning 
-    how to retrieve information, but also in how to pull specific information from in JSON.
-  * 
+    how to retrieve information, but also in how to pull specific information with JSON.
+ 
 
 
 ## Version 0.1
