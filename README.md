@@ -3,6 +3,7 @@
 ![Student Grade Table](/img/sgt.png)
 
 **Description**: The student grade table is an information table listing student names, courses and grades. <br>
+<a href="http://www.trevorlinan.com/studentgradetable" target="_blank">View Project</a>
 
 ##Features
 * Total grade point average of all students.
