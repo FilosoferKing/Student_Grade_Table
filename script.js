@@ -132,11 +132,16 @@ function reset() {
 };
 
 function load_data(){
+    var noStudents = $('<h3>', {
+    }).appendTo('tbody');
+    $('tbody h3').text("Loading Data").addClass('flash');
+
     $.ajax({
         dataType: 'json',
         url: 'http://s-apis.learningfuze.com/sgt/get',
         crossDomain: true,
         success: function(response){
+            $('tbody').removeClass('flash');
             if (!response.success){
                 console.log("Could not retrieve data");
             }
@@ -157,6 +162,7 @@ function load_data(){
         },
         error: function(response){
             console.log("Could not retrieve data");
+            $('tbody h3').text("No Data Available").removeClass('flash');
         }
     });
 
@@ -283,9 +289,6 @@ function delete_click() {
 $(document).ready(function () {
     load_data();
 
-    var noStudents = $('<h3>', {
-        text: 'User Info Unavailable'
-    }).appendTo('tbody');
     reset();
 
     $('#course').keyup(function(){
